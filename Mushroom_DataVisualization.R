@@ -34,6 +34,10 @@ mushroom$class[mushroom$class == "e"] = "edible"
 mushroom$class[mushroom$class == "p"] = "poisonous"
 mushroom$class = as.factor(mushroom$class)
 
+# Remove incomplete data.
+mushroom$veiltype = NULL
+mushroom$stalkroot = NULL
+
 library(ggplot2)
 library(caret)
 library(gridExtra)
@@ -50,3 +54,22 @@ qp3 = qplot(odor, sporeprintcolor, color = class, data = mushroom, geom = "jitte
 qp4 = qplot(stalksurfacebelowring, stalkcolorabovering, color = class, data = mushroom, geom = "jitter", main = "Mushroom data set - Stalk Surface below Ring vs Stalk Color above Ring")
 
 grid.arrange(qp1, qp2, qp3, qp4, ncol = 2, nrow = 2)
+
+#Knn
+library(class)
+#Split data into train and test
+sub<-sample(nrow(mushroom),floor(nrow(mushroom) * .7))
+#training_split <-createDataPartition(y=mushroom$class,p=0.70,list=FALSE)
+training_set <- mushroom[sub,]
+testing_set <- mushroom[-sub,]
+table(mushroom$class)
+table(training_set$class)
+table(testing_set$class)
+
+traindatawithoutclass<-subset(training_set,select = -c(class))
+testdatawithoutclass<-subset(testing_set,select = -c(class))
+pred = knn(traindatawithoutclass,testdatawithoutclass,training_set$class,k=1) 
+#print(model_fit)
+#plot(model_fit)
+#print(model_fit)
+#plot(model_fit)
