@@ -1,18 +1,39 @@
 rm(list=ls(all=TRUE))
+
 sample <- read.csv(url("https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.data"))
-##col_names <- read.csv(url("https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.names"))
+
 1:ncol(sample)
-colnames(sample) <- sapply(1:ncol(sample) , function(x) paste0("col",x))
- 
-sample$col2
+
+
 colnames(sample)[1]<- "target"
- 
-table(sample$target,sample$col2)
- 
- 
+colnames(sample)[2]<-"capshape"
+colnames(sample)[3]<-"capsurface"
+colnames(sample)[4]<-"capcolor"
+colnames(sample)[5]<-"bruises"
+colnames(sample)[6]<-"odor"
+colnames(sample)[7]<-"gillattachment"
+colnames(sample)[8]<-"gillspacing"
+colnames(sample)[9]<-"gillsize"
+colnames(sample)[10]<-"gillcolor"
+colnames(sample)[11]<-"stalkshape"
+
+colnames(sample)[12]<-"stalkroot"
+colnames(sample)[13]<-"stalksurfaceabovering"
+colnames(sample)[14]<-"stalksurfacebelowring"
+colnames(sample)[15]<-"stalkcolorabovering"
+colnames(sample)[16]<-"stalkcolorbelowring"
+colnames(sample)[17]<-"veiltype"
+colnames(sample)[18]<-"veilcolor"
+colnames(sample)[19]<-"ringnumber"
+colnames(sample)[20]<-"ringtype"
+colnames(sample)[21]<-"sporeprintcolor"
+colnames(sample)[22]<-"population"
+colnames(sample)[23]<-"habitat"
+
 
 library(randomForest)
 RFModel <- randomForest(sample$target~.,data = sample,ntree =100)
+summary(RFModel)
 Important_Var <- RFModel$importance
 Important_Var <- as.data.frame(Important_Var)
 Important_Var$Col_Names <- rownames(Important_Var)
